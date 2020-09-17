@@ -1,0 +1,9 @@
+server:
+    port: 4204
+    name: "musick"
+  
+  lastfm:
+    apiKey: "xxx"
+    apiSecret: "xxx"
+    username: "architkhode"
+  
