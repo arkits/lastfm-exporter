@@ -40,7 +40,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           source: "musick"
-          target: "musick/musick"
+          target: "musick"
+          rm: true
 
       - name: Restart the Service
         uses: appleboy/ssh-action@master
@@ -49,4 +50,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          script: pwd
+          script: |
+            cd musick
+            ./musick > musick.log 2>&1 &
