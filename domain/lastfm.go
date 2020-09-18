@@ -45,8 +45,7 @@ func PollRecentTracks() {
 		)
 
 		if err != nil {
-			log.Fatal(err)
-			break
+			log.Println(err)
 		}
 
 		LastFmPollingData.mu.Lock()
@@ -68,6 +67,6 @@ func PollRecentTracks() {
 
 		LastFmPollingData.mu.Unlock()
 
-		time.Sleep(1 * time.Second)
+		time.Sleep(viper.GetDuration("lastfm.pollRateSecond") * time.Second)
 	}
 }
