@@ -40,7 +40,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           source: "musick,scripts"
-          target: "software/musick"
+          target: "software/musick/stage"
           overwrite: true
 
       - name: Restart the Service
@@ -51,5 +51,5 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd software/musick/scripts
+            cd software/musick/stage/scripts
             ./run_prod.sh
