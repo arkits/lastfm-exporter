@@ -37,6 +37,7 @@ func main() {
 	r.HandleFunc(fmt.Sprintf("/%s/metrics", serviceName), promhttp.Handler().ServeHTTP).Methods(http.MethodGet)
 
 	r.Use(handlers.LoggingMiddleware)
+	r.Use(handlers.MetricsMiddleware)
 	r.Use(mux.CORSMethodMiddleware(r))
 
 	log.Printf("Starting musick on http://localhost:%v", port)
