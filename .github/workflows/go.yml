@@ -39,8 +39,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          source: "musick"
-          target: "musick"
+          source: "musick,scripts"
+          target: "software/musick"
           rm: true
 
       - name: Restart the Service
@@ -51,5 +51,5 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd musick
-            ./musick > musick.log 2>&1 &
+            cd software/musick/scripts
+            ./run_prod.sh
