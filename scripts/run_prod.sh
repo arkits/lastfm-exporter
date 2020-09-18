@@ -2,16 +2,18 @@
 
 set -e
 
-echo "Running Musick!"
+echo "We out here in $(pwd)"
 
+echo "==> Killing the old Musick.."
 ./kill.sh
 
-rm -rf ../../service
+echo "==> Deleting the old binary..."
+rm -rf ../../service/musick
 
 mkdir -p ../../service
+mv ../musick ../../service
 
-mv musick ../service
+cd ../../service
 
-cd service
-
+echo "==> Starting the new Musick!"
 ./musick > service.log 2>&1 & 
