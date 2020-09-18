@@ -46,26 +46,29 @@ func PollRecentTracks() {
 
 		if err != nil {
 			log.Println(err)
+		} else {
+
+			// Update LastFmPollingData
+
+			LastFmPollingData.mu.Lock()
+
+			// Persist the relevant data
+			LastFmPollingData.User = result.User
+			LastFmPollingData.NowPlaying.TrackName = result.Tracks[0].Name
+			LastFmPollingData.NowPlaying.AlbumName = result.Tracks[0].Album.Name
+			LastFmPollingData.NowPlaying.ArtistName = result.Tracks[0].Artist.Name
+			LastFmPollingData.NowPlaying.LastFmURL = result.Tracks[0].Url
+			LastFmPollingData.NowPlaying.CoverArtURL = result.Tracks[0].Images[len(result.Tracks[0].Images)-1].Url
+
+			// update when the last update took place
+			LastFmPollingData.lastUpdated = time.Now()
+
+			// update the pollCount
+			LastFmPollingData.pollCount++
+			LastFmPollCounter.Inc()
+
+			LastFmPollingData.mu.Unlock()
 		}
-
-		LastFmPollingData.mu.Lock()
-
-		// Persist the relevant data
-		LastFmPollingData.User = result.User
-		LastFmPollingData.NowPlaying.TrackName = result.Tracks[0].Name
-		LastFmPollingData.NowPlaying.AlbumName = result.Tracks[0].Album.Name
-		LastFmPollingData.NowPlaying.ArtistName = result.Tracks[0].Artist.Name
-		LastFmPollingData.NowPlaying.LastFmURL = result.Tracks[0].Url
-		LastFmPollingData.NowPlaying.CoverArtURL = result.Tracks[0].Images[len(result.Tracks[0].Images)-1].Url
-
-		// update when the last update took place
-		LastFmPollingData.lastUpdated = time.Now()
-
-		// update the pollCount
-		LastFmPollingData.pollCount++
-		LastFmPollCounter.Inc()
-
-		LastFmPollingData.mu.Unlock()
 
 		time.Sleep(viper.GetDuration("lastfm.pollRateSecond") * time.Second)
 	}
