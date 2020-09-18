@@ -11,7 +11,7 @@ import (
 
 // PollingData encapsulates the data that needs to be persisted when polling a particular data source
 type PollingData struct {
-	mu          sync.RWMutex
+	mu          sync.Mutex
 	lastUpdated time.Time
 	pollCount   int
 	User        string `json:"username"`
@@ -64,6 +64,7 @@ func PollRecentTracks() {
 
 		// update the pollCount
 		LastFmPollingData.pollCount++
+		LastFmPollCounter.Inc()
 
 		LastFmPollingData.mu.Unlock()
 

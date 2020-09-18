@@ -1,6 +1,6 @@
 server:
-    port: 4204
-    name: "musick"
+    port: 4204              # run the server on port
+    name: "musick"          # base name of the HTTP address
   
   lastfm:
     apiKey: "xxx"
