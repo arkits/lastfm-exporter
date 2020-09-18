@@ -23,8 +23,8 @@ func MetricsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		defer func(begin time.Time) {
-			domain.HttpRequestDurations.WithLabelValues(r.Method, r.RequestURI).Observe(time.Since(begin).Seconds())
-			domain.HttpRequestsTotal.WithLabelValues(r.Method, r.RequestURI).Inc()
+			domain.HTTPRequestDurations.WithLabelValues(r.Method, r.RequestURI).Observe(time.Since(begin).Seconds())
+			domain.HTTPRequestsTotal.WithLabelValues(r.Method, r.RequestURI).Inc()
 		}(time.Now())
 
 		next.ServeHTTP(w, r)

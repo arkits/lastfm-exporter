@@ -11,18 +11,21 @@ var (
 		},
 	)
 
-	HttpRequestDurations = prometheus.NewHistogramVec(
+	// HTTPRequestDurations - Duration of HTTP requests in seconds
+	HTTPRequestDurations = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Name:    "http_request_duration_seconds",
-			Help:    "http_request_duration_seconds",
+			Help:    "Duration of HTTP requests in seconds",
 			Buckets: []float64{0.1, 0.5, 1, 1.5, 2.0},
 		},
 		[]string{"path", "route"},
 	)
 
-	HttpRequestsTotal = prometheus.NewCounterVec(
+	// HTTPRequestsTotal - Counter for total requests received
+	HTTPRequestsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "http_request_total",
+			Help: "Counter for total requests received",
 		},
 		[]string{"path", "route"},
 	)
@@ -30,8 +33,8 @@ var (
 
 func init() {
 	prometheus.MustRegister(LastFmPollCounter)
-	prometheus.MustRegister(HttpRequestDurations)
-	prometheus.MustRegister(HttpRequestsTotal)
+	prometheus.MustRegister(HTTPRequestDurations)
+	prometheus.MustRegister(HTTPRequestsTotal)
 
 	// Add Go module build info.
 	prometheus.MustRegister(prometheus.NewBuildInfoCollector())
