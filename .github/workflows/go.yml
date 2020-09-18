@@ -41,7 +41,7 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "musick,scripts"
           target: "software/musick"
-          rm: true
+          overwrite: true
 
       - name: Restart the Service
         uses: appleboy/ssh-action@master
