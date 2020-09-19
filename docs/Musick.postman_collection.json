@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "89d558f3-15ef-4002-b9e8-c9ec52114829",
+		"name": "Musick",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET API version",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4204/musick",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4204",
+					"path": [
+						"musick"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Now Playing",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4204/musick/now",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4204",
+					"path": [
+						"musick",
+						"now"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Prom Metrics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4204/musick/metrics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4204",
+					"path": [
+						"musick",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
