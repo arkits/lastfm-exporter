@@ -3,14 +3,6 @@ package domain
 import "github.com/prometheus/client_golang/prometheus"
 
 var (
-	// LastFmPollCounter counts the number of time the LastFM API was polled
-	LastFmPollCounter = prometheus.NewCounter(
-		prometheus.CounterOpts{
-			Name: "musick_lastfm_polling_count",
-			Help: "Musick - Number of times the LastFM API was polled",
-		},
-	)
-
 	// HTTPRequestDurations - Duration of HTTP requests in seconds
 	HTTPRequestDurations = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
@@ -21,20 +13,38 @@ var (
 		[]string{"path", "route"},
 	)
 
-	// HTTPRequestsTotal - Counter for total requests received
-	HTTPRequestsTotal = prometheus.NewCounterVec(
+	// HTTPRequestTotal - Counter for total requests received
+	HTTPRequestTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "http_request_total",
 			Help: "Counter for total requests received",
 		},
 		[]string{"path", "route"},
 	)
+
+	// LastFmPollCounter - Number of times the LastFM API was polled
+	LastFmPollCounter = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Name: "musick_lastfm_polling_count",
+			Help: "Musick - Number of times the LastFM API was polled",
+		},
+	)
+
+	// LastFmPollErrorCounter - Number of times the LastFM API polling threw an error
+	LastFmPollErrorCounter = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Name: "musick_lastfm_polling_error_count",
+			Help: "Musick - Number of times the LastFM API polling threw an error",
+		},
+	)
 )
 
 func init() {
-	prometheus.MustRegister(LastFmPollCounter)
 	prometheus.MustRegister(HTTPRequestDurations)
-	prometheus.MustRegister(HTTPRequestsTotal)
+	prometheus.MustRegister(HTTPRequestTotal)
+
+	prometheus.MustRegister(LastFmPollCounter)
+	prometheus.MustRegister(LastFmPollErrorCounter)
 
 	// Add Go module build info.
 	prometheus.MustRegister(prometheus.NewBuildInfoCollector())

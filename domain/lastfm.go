@@ -46,10 +46,9 @@ func PollRecentTracks() {
 
 		if err != nil {
 			log.Println(err)
+			LastFmPollErrorCounter.Inc()
 		} else {
-
-			// Update LastFmPollingData
-
+			// Begin updating LastFmPollingData
 			LastFmPollingData.mu.Lock()
 
 			// Persist the relevant data
