@@ -36,7 +36,7 @@ func PollRecentTracks() {
 	)
 
 	for {
-		log.Printf("Getting recent tracks from LastFM - PollCount=%v", LastFmPollingData.pollCount)
+		// log.Printf("Getting recent tracks from LastFM - PollCount=%v", LastFmPollingData.pollCount)
 
 		result, err := lastFmAPI.User.GetRecentTracks(
 			lastfm.P{
