@@ -28,16 +28,17 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", handlers.VersionController).Methods(http.MethodGet)
-	r.HandleFunc(fmt.Sprintf("/%s", serviceName), handlers.VersionController).Methods(http.MethodGet)
+	r.HandleFunc("/", handlers.VersionController).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc(fmt.Sprintf("/%s", serviceName), handlers.VersionController).Methods(http.MethodGet, http.MethodOptions)
 
-	r.HandleFunc(fmt.Sprintf("/%s/now", serviceName), handlers.NowPlayingController).Methods(http.MethodGet)
+	r.HandleFunc(fmt.Sprintf("/%s/now", serviceName), handlers.NowPlayingController).Methods(http.MethodGet, http.MethodOptions)
 
 	// Expose Prometheus metrics
-	r.HandleFunc(fmt.Sprintf("/%s/metrics", serviceName), promhttp.Handler().ServeHTTP).Methods(http.MethodGet)
+	r.HandleFunc(fmt.Sprintf("/%s/metrics", serviceName), promhttp.Handler().ServeHTTP).Methods(http.MethodGet, http.MethodOptions)
 
 	r.Use(handlers.LoggingMiddleware)
 	r.Use(handlers.MetricsMiddleware)
+	r.Use(handlers.CorsMiddleware)
 	r.Use(mux.CORSMethodMiddleware(r))
 
 	log.Printf("Starting musick on http://localhost:%v", port)
