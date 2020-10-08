@@ -5,7 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/shkh/lastfm-go/lastfm"
+	"git.maych.in/thunderbottom/lastfm-go"
+	"git.maych.in/thunderbottom/lastfm-go/api/user"
 	"github.com/spf13/viper"
 )
 
@@ -29,35 +30,33 @@ var LastFmPollingData PollingData
 
 // PollRecentTracks - polls recent LastFM tracks
 func PollRecentTracks() {
-
-	lastFmAPI := lastfm.New(
+	lastFmClient := lastfm.New(
 		viper.GetString("lastfm.apiKey"),
 		viper.GetString("lastfm.apiSecret"),
 	)
 
-	for {
-		// log.Printf("Getting recent tracks from LastFM - PollCount=%v", LastFmPollingData.pollCount)
+	lastFmUser := user.New(&lastFmClient, viper.GetString("lastfm.username"))
 
-		result, err := lastFmAPI.User.GetRecentTracks(
-			lastfm.P{
-				"user": viper.GetString("lastfm.username"),
-			},
-		)
+	for {
+		recentTracks, err := lastFmUser.GetRecentTracks(false, 1)
 
 		if err != nil {
 			log.Println(err)
 			LastFmPollErrorCounter.Inc()
 		} else {
+
+			lastTrack := recentTracks.RecentTracks.Tracks[0]
+
 			// Begin updating LastFmPollingData
 			LastFmPollingData.mu.Lock()
 
 			// Persist the relevant data
-			LastFmPollingData.User = result.User
-			LastFmPollingData.NowPlaying.TrackName = result.Tracks[0].Name
-			LastFmPollingData.NowPlaying.AlbumName = result.Tracks[0].Album.Name
-			LastFmPollingData.NowPlaying.ArtistName = result.Tracks[0].Artist.Name
-			LastFmPollingData.NowPlaying.LastFmURL = result.Tracks[0].Url
-			LastFmPollingData.NowPlaying.CoverArtURL = result.Tracks[0].Images[len(result.Tracks[0].Images)-1].Url
+			LastFmPollingData.User = viper.GetString("lastfm.username")
+			LastFmPollingData.NowPlaying.TrackName = lastTrack.Name
+			LastFmPollingData.NowPlaying.AlbumName = lastTrack.Album.Text
+			LastFmPollingData.NowPlaying.ArtistName = lastTrack.Artist.Text
+			LastFmPollingData.NowPlaying.LastFmURL = lastTrack.URL
+			LastFmPollingData.NowPlaying.CoverArtURL = lastTrack.Image[len(lastTrack.Image)-1].Text
 
 			// update when the last update took place
 			LastFmPollingData.lastUpdated = time.Now()
