@@ -16,4 +16,4 @@ mv ../musick ../../service
 cd ../../service
 
 echo "==> Starting the new Musick!"
-./musick & 
+./musick > service.log 2>&1 & 
