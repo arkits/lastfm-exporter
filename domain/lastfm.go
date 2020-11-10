@@ -45,6 +45,12 @@ func PollRecentTracks() {
 			LastFmPollErrorCounter.Inc()
 		} else {
 
+			// The API can occasionally return a RecentTracks array of length 0...
+			// Ignore and continue in this case
+			if len(recentTracks.RecentTracks.Tracks) <= 0 {
+				continue
+			}
+
 			lastTrack := recentTracks.RecentTracks.Tracks[0]
 
 			// Begin updating LastFmPollingData
